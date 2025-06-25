@@ -28,6 +28,42 @@ const createItem = async (req, res, next) => {
   }
 };
 
+const editItem = async (req, res, next) => {
+  try {
+    const { itemId } = req.params;
+    const userId = req.user?._id;
+    const updateData = req.body; // the fields to update
+
+    if (!itemId) {
+      return next(new BadRequestError("Item Id is required"));
+    }
+
+    const item = await transactionItem.findById(itemId).orFail();
+
+    if (!item.owner.equals(userId)) {
+      return next(
+        new ForbiddenError("You are not authorized to perform this action.")
+      );
+    }
+
+    const updatedItem = await transactionItem.findByIdAndUpdate(
+      itemId,
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    return res.status(200).send({
+      message: "Item updated successfully",
+      data: updatedItem,
+    });
+  } catch (err) {
+    if (err.name === "DocumentNotFoundError") {
+      return next(new NotFoundError("Item not found"));
+    }
+    return next(err);
+  }
+};
+
 const deleteItem = (req, res, next) => {
   const { itemId } = req.params;
   const userId = req.user?._id;
@@ -67,5 +103,6 @@ const deleteItem = (req, res, next) => {
 module.exports = {
   getTransactionItems,
   createItem,
+  editItem,
   deleteItem,
 };
