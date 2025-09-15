@@ -20,6 +20,11 @@ module.exports.validateTransactionBody = celebrate({
       "number.positive": 'The "amount" must be positive',
       "any.required": 'The "amount" field is required',
     }),
+    category: Joi.string().required().min(1).messages({
+      "string.min": 'The minimum length of the "category" field is 1',
+      "string.empty": 'The "category" field must be filled in',
+      "any.required": 'The "category" field is required',
+    }),
     type: Joi.string().required().valid("income", "expense"),
   }),
 });

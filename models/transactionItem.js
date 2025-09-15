@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
+const mongoose = require("mongoose");
+const validator = require("validator");
 
 const transactionItemSchema = new mongoose.Schema({
   name: {
@@ -11,12 +11,18 @@ const transactionItemSchema = new mongoose.Schema({
   amount: {
     type: Number,
     required: true,
+    min: 1,
+  },
+  category: {
+    type: String,
+    required: [true, "Category is required"],
+    trim: true,
     minlength: 1,
   },
   type: {
     type: String,
-    required: [true, 'Must enter income or expense'],
-    enum: ['income', 'expense'],
+    required: [true, "Must enter income or expense"],
+    enum: ["income", "expense"],
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
@@ -29,4 +35,4 @@ const transactionItemSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('item', transactionItemSchema);
+module.exports = mongoose.model("item", transactionItemSchema);

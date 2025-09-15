@@ -1,24 +1,32 @@
-const transactionItem = require("../models/transactionItem");
-const TransactionItems = require("../models/transactionItem");
+const TransactionItem = require("../models/transactionItem");
 const BadRequestError = require("../errors/badrequest");
 const NotFoundError = require("../errors/notfound");
 const ForbiddenError = require("../errors/forbidden");
 
+// GET all items
 const getTransactionItems = (req, res, next) => {
-  TransactionItems.find({})
-    .then((item) => {
+  TransactionItem.find({})
+    .then((items) => {
       console.log("Items gotten!");
-      res.status(200).send(item);
+      res.status(200).send(items);
     })
     .catch((err) => next(err));
 };
 
+// CREATE item
 const createItem = async (req, res, next) => {
-  const { name, amount, type } = req.body;
+  const { name, amount, category, type } = req.body;
   const owner = req.user._id;
 
   try {
-    const item = await TransactionItems.create({ name, amount, type, owner });
+    console.log("Creating item with:", { name, amount, type, category, owner });
+    const item = await TransactionItem.create({
+      name,
+      amount,
+      category,
+      type,
+      owner,
+    });
     console.log("Item Created: ", item);
     res.status(201).send({ data: item });
   } catch (err) {
@@ -29,6 +37,7 @@ const createItem = async (req, res, next) => {
   }
 };
 
+// EDIT item
 const editItem = async (req, res, next) => {
   try {
     const { itemId } = req.params;
@@ -39,7 +48,7 @@ const editItem = async (req, res, next) => {
       return next(new BadRequestError("Item Id is required"));
     }
 
-    const item = await transactionItem.findById(itemId).orFail();
+    const item = await TransactionItem.findById(itemId).orFail();
 
     if (!item.owner.equals(userId)) {
       return next(
@@ -47,7 +56,7 @@ const editItem = async (req, res, next) => {
       );
     }
 
-    const updatedItem = await transactionItem.findByIdAndUpdate(
+    const updatedItem = await TransactionItem.findByIdAndUpdate(
       itemId,
       updateData,
       { new: true, runValidators: true }
@@ -65,25 +74,22 @@ const editItem = async (req, res, next) => {
   }
 };
 
+// DELETE item
 const deleteItem = (req, res, next) => {
   const { itemId } = req.params;
   const userId = req.user?._id;
 
-  transactionItem
-    .findById(itemId)
+  TransactionItem.findById(itemId)
     .orFail()
     .then((item) => {
       if (!item.owner.equals(userId)) {
         return next(
-          new ForbiddenError("You are not authorized to perorm this action.")
+          new ForbiddenError("You are not authorized to perform this action.")
         );
       }
-      return transactionItem.findByIdAndDelete(itemId).then((deletedItem) => {
+      return TransactionItem.findByIdAndDelete(itemId).then((deletedItem) => {
         if (!deletedItem) {
           return next(new NotFoundError("Item not found"));
-        }
-        if (!itemId) {
-          return next(new BadRequestError("Item Id is required"));
         }
         return res
           .status(200)
