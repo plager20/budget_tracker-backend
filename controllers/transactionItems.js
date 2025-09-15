@@ -7,6 +7,7 @@ const ForbiddenError = require("../errors/forbidden");
 const getTransactionItems = (req, res, next) => {
   TransactionItems.find({})
     .then((item) => {
+      console.log("Items gotten!");
       res.status(200).send(item);
     })
     .catch((err) => next(err));
@@ -18,7 +19,7 @@ const createItem = async (req, res, next) => {
 
   try {
     const item = await TransactionItems.create({ name, amount, type, owner });
-    console.log(item);
+    console.log("Item Created: ", item);
     res.status(201).send({ data: item });
   } catch (err) {
     if (err.name === "ValidationError") {
@@ -32,7 +33,7 @@ const editItem = async (req, res, next) => {
   try {
     const { itemId } = req.params;
     const userId = req.user?._id;
-    const updateData = req.body; // the fields to update
+    const updateData = req.body;
 
     if (!itemId) {
       return next(new BadRequestError("Item Id is required"));
