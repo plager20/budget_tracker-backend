@@ -15,16 +15,26 @@ const getTransactionItems = (req, res, next) => {
 
 // CREATE item
 const createItem = async (req, res, next) => {
-  const { name, amount, category, type } = req.body;
+  const { name, amount, category, type, dueDate, dueDateFrequency } = req.body;
   const owner = req.user._id;
 
   try {
-    console.log("Creating item with:", { name, amount, type, category, owner });
+    console.log("Creating item with:", {
+      name,
+      amount,
+      type,
+      category,
+      dueDate,
+      dueDateFrequency,
+      owner,
+    });
     const item = await TransactionItem.create({
       name,
       amount,
       category,
       type,
+      dueDate,
+      dueDateFrequency,
       owner,
     });
     console.log("Item Created: ", item);

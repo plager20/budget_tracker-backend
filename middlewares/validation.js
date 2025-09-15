@@ -26,6 +26,15 @@ module.exports.validateTransactionBody = celebrate({
       "any.required": 'The "category" field is required',
     }),
     type: Joi.string().required().valid("income", "expense"),
+
+    dueDate: Joi.date().required().messages({
+      "any.required": 'The "Due Date" field is required',
+    }),
+    dueDateFrequency: Joi.string().required().min(1).messages({
+      "string.min": 'The minimum length of the "category" field is 1',
+      "string.empty": 'The "category" field must be filled in',
+      "any.required": 'The "category" field is required',
+    }),
   }),
 });
 

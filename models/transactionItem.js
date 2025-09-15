@@ -24,6 +24,15 @@ const transactionItemSchema = new mongoose.Schema({
     required: [true, "Must enter income or expense"],
     enum: ["income", "expense"],
   },
+  dueDate: {
+    type: Date,
+    required: [true, "Must enter a date"],
+  },
+  dueDateFrequency: {
+    type: String,
+    required: [true, "Category is required"],
+    minlength: 1,
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
