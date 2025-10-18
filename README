@@ -1,8 +1,9 @@
-# Spendly Backend
+# Budget Tracker Backend
 
 The backend for Spendly, a personal budgeting and expense tracking application. It provides a RESTful API for managing users, authentication, and financial transactions such as income and expenses.
 
 ## Features
+
 - User authentication and authorization (JWT-based)
 - CRUD operations for income and expense transactions
 - Category and frequency tracking for recurring payments
@@ -14,47 +15,52 @@ The backend for Spendly, a personal budgeting and expense tracking application. 
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js (v18 or higher)
 - MongoDB (local or cloud instance)
 
 ### Installation
 
 1. Clone this repository:
-    git clone https://github.com/your-username/spendly-backend.git
-    cd spendly-backend
+   git clone https://github.com/your-username/budget-tracker-backend.git
+   cd budget-tracker-backend
 
 2. Install dependencies:
-    npm install
+   npm install
 
-3. Create an .env file in the root directory and define the following (example):
-    PORT=3001
-    MONGO_URI=mongodb://localhost:27017/spendlydb
-    JWT_SECRET=your_jwt_secret_key
+3. Configuration
+   The backend can run without a .env file using default values:
+   PORT defaults to 3001
+   MONGO_URI defaults to mongodb://127.0.0.1:27017/budget-tracker_db
+   JWT_SECRET is built in and does not need to be set manually
+
+For production, it’s recommended to use environment variables to secure sensitive data.
 
 > Note: The lines above are plain text within this single code block. When you paste into your editor, remove the leading spaces if you want them as normal shell commands or keep the indentation to paste as a block.
 
 ## Running the Server
 
 To start the development server:
-    npm run dev
+npm run dev
 
 To start the production server:
-    npm start
+npm start
 
 ## API Overview
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST   | /signup  | Register a new user |
-| POST   | /signin  | Log in and receive a JWT |
-| GET    | /users/me | Get current user info |
-| PATCH  | /users/me | Update user profile |
-| GET    | /transactions | Get all user transactions |
-| POST   | /transactions | Create a new transaction |
-| PATCH  | /transactions/:id | Update a transaction |
-| DELETE | /transactions/:id | Delete a transaction |
+| Method | Endpoint  | Description               |
+| ------ | --------- | ------------------------- |
+| POST   | /signup   | Register a new user       |
+| POST   | /signin   | Log in and receive a JWT  |
+| GET    | /users/me | Get current user info     |
+| PATCH  | /users/me | Update user profile       |
+| GET    | /items    | Get all user transactions |
+| POST   | /items    | Create a new transaction  |
+| PATCH  | /item/:id | Update a transaction      |
+| DELETE | /item/:id | Delete a transaction      |
 
 ## Technologies Used
+
 - Node.js
 - Express
 - MongoDB + Mongoose
@@ -64,6 +70,5 @@ To start the production server:
 - dotenv for environment variables
 
 ## License
+
 This project is licensed under the MIT License. See the LICENSE file for details.
-
-
