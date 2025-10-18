@@ -36,8 +36,6 @@ The backend for Spendly, a personal budgeting and expense tracking application. 
 
 For production, it’s recommended to use environment variables to secure sensitive data.
 
-> Note: The lines above are plain text within this single code block. When you paste into your editor, remove the leading spaces if you want them as normal shell commands or keep the indentation to paste as a block.
-
 ## Running the Server
 
 To start the development server:
